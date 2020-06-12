@@ -1,0 +1,300 @@
+<odoo>
+    <template id="aal_delivery_order_tax_invoice_C_form">
+        <div class="header">
+            <div class="row">
+                <div class="col-7">
+                    <div>
+                        <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 60px;"/>
+                    </div>
+
+                    <table>
+                        <tr>
+                            <td >
+                              บริษัท อีซี่ เน็ต จำกัด (สาขา 00001) <br />
+                              162/46 สุขสวัสดิ์ แขวงราษฎร์บูรณะ เขตราษฎร์บูรณะ <br/>กรุงเทพฯ 10140 <br/>
+                              เลขที่ประจำตัวผู้เสียภาษี 0115555003373 โทร. 0-2057-2996 <br/>
+                            </td>
+                        </tr>
+                    </table>
+
+                     <div class="row" style="position: absolute;bottom: 0px;">
+                           <div class="col-10 ">
+                             <table class="table-sm table_border_all" style="margin: 0px;">
+                                 <td>
+                                     <div class="row">
+                                         <div class="col-3 text-left">
+                                           <p>  ผู้ซื้อ <br/> Sold To</p>
+                                         </div>
+                                         <div class="col-9 text-left">
+                                             <span t-field="o.partner_id.name"/> <br/>
+                                             <span t-field="o.partner_id.street"/>
+                                             <span t-field="o.partner_id.street2"/>
+                                             <span t-field="o.partner_id.city"/>
+                                             <span t-field="o.partner_id.state_id.name"/>
+                                             <span t-field="o.partner_id.country_id.name"/>
+                                             <span t-field="o.partner_id.zip"/>
+                                         </div>
+                                     </div>
+                                   </td>
+                               </table>
+                             </div>
+                             <div class="col-1"></div>
+                      </div>
+
+                  </div>
+
+                <div class="col-5">
+                  <div class="delivery_order_tax_invoice_form">
+                          <table class="table table-sm table_company_data  mt4">
+                              <thead>
+                                  <tr class="text-center">
+                                      <th>ใบกำกับภาษี/ใบส่งสินค้า <br/> TAX INVOICE/DELIVERY ORDER</th>
+                                  </tr>
+                              </thead>
+                          </table>
+                      </div>
+
+                    <h6 class="text-center">
+                          <th><br/> ต้นฉบับ/ORIGINAL<br/> เอกสารออกเป็นชุด<br/> </th>
+                    </h6>
+
+                    <div class="row">
+                        <div class="col-5 text-right table_border_right table_border_left table_border_top">
+                            <p>
+                                เลขที่/No
+                            </p>
+                        </div>
+                        <div class="col-7 table_border_right table_border_top">
+                                <span t-field="o.number"/><br/>
+                        </div>
+                    </div>
+
+                    <div class="row ">
+                        <div class="col-5 text-right table_border_right table_border_left table_border_top">
+                            <p>
+                                วันที่/Date<br/>
+                            </p>
+                        </div>
+                        <div class="col-7 table_border_right table_border_top">
+                                <span t-field="o.date_invoice"/><br/>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-5 text-right table_border_right table_border_left table_border_top">
+                            <p>
+                                กำหนดชำระเงิน<br/>
+                            </p>
+                        </div>
+                        <div class="col-7 table_border_right table_border_top">
+                            <span t-field="o.date_invoice"/><br/>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-5 text-right table_border_right table_border_left table_border_top">
+                            <p>
+                                เงื่อนไขชำระเงิน<br/>
+                            </p>
+                        </div>
+                        <div class="col-7 table_border_right table_border_top">
+                            <span t-field="o.payment_term_id"/><br/>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-5 text-right table_border_right table_border_left table_border_top">
+                            <p>
+                                ใบสั่งซื้อ<br/>
+                            </p>
+                        </div>
+                        <div class="col-7 table_border_right table_border_top">
+                            <span t-field="o.move_id"/><br/>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-5 text-right table_border_right table_border_left table_border_top table_border_bottom">
+                            <p>
+                                พนักงาน
+                            </p>
+                        </div>
+                        <div class="col-7 table_border_right table_border_top table_border_bottom">
+                            <span t-field="o.user_id"/>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="article delivery_order_tax_invoice_form">
+
+            <table class="table-sm table_company_data " border="3" width="100%" >
+                <thead>
+                    <tr class="text-center " valign="text-middle" >
+                        <th>ลำดับที่ <br/> Item</th>
+                        <th>รหัสสินค้า<br/> Product Code</th>
+                        <th>รายการ <br/>Descroption</th>
+                        <th>จำนวน<br/>Quantity</th>
+                        <th>หน่วยละ<br/>Unit Price</th>
+                        <th>จำนวนเงิน<br/>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="n" t-value="1"/>
+                    <t t-set="total_discount" t-value="0"/>
+                    <tr t-foreach="o.invoice_line_ids" t-as="line">
+                        <t t-set="total_discount" t-value="total_discount + (((line.discount/100)*line.price_unit)*line.quantity)"/>
+                        <td class="text-center">
+                            <span t-esc="n"/>
+                            <t t-set="n" t-value="n+1"/>
+                        </td>
+                        <td>
+                            <span t-field="line.product_id.default_code"/>
+                        </td>
+                        <td class="text-left">
+                            <span t-field="line.name"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-field="line.quantity"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-field="line.price_unit"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-esc="'{0:,.2f}'.format(line.price_subtotal)"/>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+
+                        <td class="text-right" colspan ="5"  rowspan ="5">
+                            รวมจำนวนเงิน<br/>
+                            ส่วนลด<br/>
+                            ราคาสินค้าไม่รวมภาษีมูลค่าเพิ่ม<br/>
+                            ภาษีมูลค่าเพิ่ม
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td class="text-right ">
+                            <span t-esc="'{0:,.2f}'.format(o.amount_untaxed)"/>
+                        </td>
+                    </tr>
+
+                    <!-- <tr t-foreach="o.invoice_line_ids" t-as="line">
+                        <t t-set="a" t-value="line.discount"/>
+                        <td class="text-right ">
+                            <t t-set ="total_discount" t-value = "(((a/100)*line.price_unit)*line.quantity)"/>
+                                    <span t-esc="'{0:,.2f}'.format(total_discount)"/>
+                        </td>
+                    </tr> -->
+                    <tr>
+                        <td class="text-right ">
+                            <span t-esc="'{0:,.2f}'.format(total_discount)"/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="text-right ">
+                            <span t-esc="'{0:,.2f}'.format(o.amount_untaxed)"/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="text-right ">
+                            <span t-esc="'{0:,.2f}'.format(o.amount_tax)"/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="text-center" colspan ="3">
+                            รวมทั้งสิ้น
+                        </td>
+                        <td class="text-right" colspan ="2">
+                            รวมทั้งสิ้น
+                        </td>
+                        <td class="text-right ">
+                            <span t-esc="'{0:,.2f}'.format(o.amount_total)"/>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+
+
+        <div class="footer">
+            <div class="row">
+              <div class="col-8">
+
+                  <div class=" delivery_order_tax_invoice_form">
+                      <div class="table_company">
+                    <table class="table table-sm  table_company_data mt4">
+                          <tr>
+                              <th>
+                                ได้รับสินค้าดังกล่าวไว้ในสภาพเรียบร้อย <br />
+                                Received the above merchandises in good order and condition<br/>
+                                    <div class="row">
+                                        <div class="col-6">
+
+                                        ผู้รับสินค้า ..................................<br/>
+                                        Received by <br/>
+                                        วันที่  ............./............./.............
+                                           <br/>
+                                        Date
+                                        </div>
+                                        <div class="col-6">
+                                          ผู้ส่งสินค้า ..................................<br/>
+                                          Delivery by <br/>
+                                          วันที่  ............./............./.............
+                                             <br/>
+                                          Date
+                                        </div>
+                                    </div>
+                                  </th>
+                                </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-4">
+                    <div class="delivery_order_tax_invoice_form">
+                        <div class="table_company">
+                      <table class="table table-sm table_company_data mt4">
+                            <tr class="text-center" valign="text-buttom">
+                                <th>
+                                  <br/>
+                                  <br/>
+                                  <br/>
+
+                                  .............................................<br/>ผู้มีอำนาจลงนาม<br/>Authorized Signature
+                                </th>
+                              </tr>
+                          </table>
+                        </div>
+                      </div>
+                </div>
+        </div>
+  </div>
+
+
+
+    </template>
+
+    <template id="aal_delivery_order_tax_invoice_C_form_pdf">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="ncopies" t-value="4"/>
+                <t t-foreach="range(ncopies)" t-as="i">
+                    <t t-call="aal_account_form.aal_delivery_order_tax_invoice_C_form"/>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
